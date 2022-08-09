@@ -1,41 +1,53 @@
 import React from 'react'
-import {
-  Alert,
-  Image,
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity
-} from 'react-native'
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar'
+import { CartIcon, FavroiteIcon, HomeIcon, OrderIcon } from '../assets/icon'
+import EmptyTab from '../screens/EmptyTab'
 import Home from '../screens/Home'
+import {
+  CenterButton,
+  CustomDot,
+  CustomText,
+  ProfileIcon,
+  TabButtons
+} from '../styles/NavigationWrapper.style'
+import Theme from '../styles/Theme'
 
 const NavigationWrapper = () => {
-  const onClickButton = () => {
-    Alert.alert('Change type curve up')
-  }
-
-  const renderIcon = (routeName: string, selectedTab: string) => {
-    let icon = ''
-
+  const renderTabIcon = (props: { routeName: string; selectedTab: string; navigate: any }) => {
+    const { routeName, selectedTab, navigate } = props
+    let iconComponent
+    const color = routeName === selectedTab ? Theme.activeTab : Theme.inactiveTab
     switch (routeName) {
       case 'Home':
-        icon = '../assets/profile.png'
+        iconComponent = <HomeIcon fill={color} />
         break
       case 'Favourite':
-        icon = '../assets/profile.png'
+        iconComponent = <FavroiteIcon fill={color} stroke={color} />
         break
       case 'Orders':
-        icon = '../assets/profile.png'
+        iconComponent = <OrderIcon fill={color} stroke={color} />
         break
       case 'Profile':
-        icon = '../assets/profile.png'
+        iconComponent = <ProfileIcon source={require('../assets/profile.png')} />
         break
     }
-    return <Image source={require('../assets/profile.png')} />
+    return (
+      <TabButtons onPress={() => navigate(routeName)}>
+        {iconComponent}
+        <CustomText color={color}>{routeName}</CustomText>
+        {routeName === selectedTab ? <CustomDot /> : null}
+      </TabButtons>
+    )
+  }
+
+  const renderCircle = (props: { selectedTab: string; navigate: any }) => {
+    const { selectedTab, navigate } = props
+    const routeName = selectedTab === 'Cart' ? 'Cart' : ''
+    return (
+      <CenterButton onPress={() => navigate(routeName)}>
+        <CartIcon />
+      </CenterButton>
+    )
   }
 
   return (
@@ -45,84 +57,18 @@ const NavigationWrapper = () => {
       circleWidth={55}
       bgColor="white"
       borderTopLeftRight={true}
-      strokeWidth={2}
       initialRouteName="Home"
       screenOptions={{ headerShown: false }}
-      renderCircle={() => (
-        <TouchableOpacity
-          style={styles.btnCircle}
-          onPress={() => onClickButton()}
-        ></TouchableOpacity>
-      )}
-      tabBar={({ routeName, selectedTab, navigate }) => (
-        <TouchableOpacity
-          onPress={() => navigate(routeName)}
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          {renderIcon(routeName, selectedTab)}
-        </TouchableOpacity>
-      )}
+      renderCircle={renderCircle}
+      tabBar={renderTabIcon}
     >
       <CurvedBottomBar.Screen name="Home" position="LEFT" component={Home} />
-      <CurvedBottomBar.Screen name="Favourite" position="LEFT" component={Home} />
-      <CurvedBottomBar.Screen name="Orders" position="RIGHT" component={Home} />
-      <CurvedBottomBar.Screen name="Profile" position="RIGHT" component={Home} />
+      <CurvedBottomBar.Screen name="Favourite" position="LEFT" component={EmptyTab} />
+      <CurvedBottomBar.Screen name="Cart" position="CENTER" component={EmptyTab} />
+      <CurvedBottomBar.Screen name="Orders" position="RIGHT" component={EmptyTab} />
+      <CurvedBottomBar.Screen name="Profile" position="RIGHT" component={EmptyTab} />
     </CurvedBottomBar.Navigator>
   )
 }
 
 export default NavigationWrapper
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
-  },
-  btnCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 1,
-    bottom: 28
-  },
-  btnCircleUp: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E8E8E8',
-    bottom: 18,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 1
-  },
-  imgCircle: {
-    width: 30,
-    height: 30,
-    tintColor: '#48CEF6'
-  },
-  img: {
-    width: 30,
-    height: 30
-  }
-})
