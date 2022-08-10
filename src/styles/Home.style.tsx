@@ -63,7 +63,7 @@ const SearchResultCard = styled.View`
   box-shadow: 0px 4px 40px rgba(34, 43, 50, 0.1);
   border-radius: 16px;
   margin-top: 16px;
-  height: 280px;
+  height: 300px;
 `;
 const CardImageView = styled.View`
   border-radius: 16px;
@@ -73,8 +73,9 @@ const CardImageView = styled.View`
   background: ${(props: IContainerProps) => props?.theme?.inactiveTab};
 `;
 const CardImage = styled.Image`
-  // resize-mode: "stretch";
+  border-radius: 16px;
   height: 140px;
+  width: 100%;
 `;
 const FavoriteView = styled.View`
   justify-content: space-between;
@@ -113,14 +114,90 @@ const PlusView = styled.TouchableOpacity`
   width: 40px;
   bottom: 0;
   right: 0;
-  border-top-left-radius:15;
-  border-bottom-right-radius:15;
+  border-top-left-radius: 16px;
+  border-bottom-right-radius: 16px;
   background: ${(props: IContainerProps) => props?.theme?.activeTab};
 `;
 const PlusViewText = styled.Text`
   text-align: center;
   font-size: 30px;
   color: ${(props: IContainerProps) => props?.theme?.white};
+`;
+const DetailView = styled.View`
+  padding: 20px;
+  top: 140px;
+  // background: ${(props: IContainerProps) => props?.theme?.activeTab};
+`;
+const TitleView = styled.View`
+  // justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+`;
+const TitleText = styled.Text`
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
+`;
+const TitleIconView = styled.TouchableOpacity`
+  position: absolute;
+  border: 2px solid #d1d1d1;
+  height: 24px;
+  width: 24px;
+  right: 0;
+  border-radius: 18px;
+`;
+const SubDetailView = styled.View``;
+const CalorieText = styled.Text`
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.5;
+  margin-vertical: 10px;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
+`;
+const DetailText = styled.Text`
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
+`;
+const BottomView = styled.View`
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-vertical: 10px;
+`;
+const PriceText = styled.Text`
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 24px;
+  flex: none;
+  order: 3;
+  flex-grow: 0;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
+`;
+const SpiceText = styled.Text`
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
 `;
 
 export {
@@ -141,4 +218,14 @@ export {
   FavoriteIconText,
   PlusView,
   PlusViewText,
+  DetailView,
+  TitleView,
+  TitleText,
+  TitleIconView,
+  SubDetailView,
+  CalorieText,
+  DetailText,
+  BottomView,
+  PriceText,
+  SpiceText,
 };

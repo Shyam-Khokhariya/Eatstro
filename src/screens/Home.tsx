@@ -17,6 +17,16 @@ import {
   FavoriteIconText,
   PlusView,
   PlusViewText,
+  DetailView,
+  TitleView,
+  TitleText,
+  TitleIconView,
+  SubDetailView,
+  CalorieText,
+  DetailText,
+  BottomView,
+  PriceText,
+  SpiceText,
 } from "../styles/Home.style";
 import { SearchIcon } from "../assets/icon";
 import { ListRenderItem } from "react-native";
@@ -59,7 +69,7 @@ const Item = ({ data }: { data: IUser }) => (
   <SearchResultCard>
     {/* <SearchResultTitle>{data.name}</SearchResultTitle> */}
     <CardImageView>
-      <CardImage source={require('../assets/burger.png')} resize-mode={"stretch"}/>
+      <CardImage source={require('../assets/burger.png')} resizeMode="stretch"/>
       <FavoriteView>
         <FavoriteText>{data.favorite}</FavoriteText>
         <FavoriteIcon>
@@ -70,6 +80,20 @@ const Item = ({ data }: { data: IUser }) => (
         <PlusViewText>+</PlusViewText>
       </PlusView>
     </CardImageView>
+    <DetailView>
+      <TitleView>
+        <TitleText>{data.name}</TitleText>
+        <TitleIconView></TitleIconView>
+      </TitleView>
+      <SubDetailView>
+        <CalorieText>🔥 {data.kcal}</CalorieText>
+        <DetailText>{data.details}</DetailText>
+        <BottomView>
+          <PriceText>{data.price}</PriceText>
+          <SpiceText></SpiceText>
+        </BottomView>
+      </SubDetailView>
+    </DetailView>
   </SearchResultCard>
 );
 
