@@ -157,6 +157,7 @@ export type StringOp = {
 export type ItemsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  searchValue?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -164,8 +165,8 @@ export type ItemsQuery = { __typename?: 'RootQuery', items?: Array<{ __typename?
 
 
 export const ItemsDocument = `
-    query ITEMS($limit: Int, $offset: Int) {
-  items(limit: $limit, offset: $offset) {
+    query Items($limit: Int, $offset: Int, $searchValue: String) {
+  items(limit: $limit, offset: $offset, where: {name: {contains: $searchValue}}) {
     createdAt
     cuisineType
     desc
@@ -189,7 +190,7 @@ export const useItemsQuery = <
       headers?: RequestInit['headers']
     ) =>
     useQuery<ItemsQuery, TError, TData>(
-      variables === undefined ? ['ITEMS'] : ['ITEMS', variables],
+      variables === undefined ? ['Items'] : ['Items', variables],
       fetcher<ItemsQuery, ItemsQueryVariables>(client, ItemsDocument, variables, headers),
       options
     );
@@ -204,7 +205,7 @@ export const useInfiniteItemsQuery = <
       headers?: RequestInit['headers']
     ) =>
     useInfiniteQuery<ItemsQuery, TError, TData>(
-      variables === undefined ? ['ITEMS.infinite'] : ['ITEMS.infinite', variables],
+      variables === undefined ? ['Items.infinite'] : ['Items.infinite', variables],
       (metaData) => fetcher<ItemsQuery, ItemsQueryVariables>(client, ItemsDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );

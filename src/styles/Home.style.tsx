@@ -6,6 +6,7 @@ import { IUser } from '../screens/Home'
 const Container = styled.View`
   flex: 1;
   padding: 15px;
+  background: ${(props: IContainerProps) => props?.theme?.background};
 `
 const Title = styled.Text`
   font-family: 'Abel';
@@ -39,14 +40,15 @@ const SearchBar = styled.View`
 `
 const SearchBarInput = styled.TextInput`
   margin: 0px 8px;
+  width: 90%;
 `
 const SearchResult = styled.View`
   flex: 1;
   margin-top: 12px;
-  // background: ${(props: IContainerProps) => props?.theme?.activeTab};
 `
 const SearchResultList = styled.FlatList`
   // flex: 1;
+  background: transparent;
 `
 const SearchResultTitle = styled.Text`
   font-family: 'Abel';
@@ -194,6 +196,21 @@ const SpiceText = styled.Text`
   flex-grow: 0;
   color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
 `
+const SearchingResult = styled.Text`
+  font-family: 'Abel';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
+  padding: 12px 0px;
+`
+const Loader = styled.ActivityIndicator`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
 
 export {
   Container,
@@ -223,5 +240,7 @@ export {
   BottomView,
   PriceText,
   SpiceText,
-  CalorieView
+  CalorieView,
+  SearchingResult,
+  Loader
 }

@@ -7,14 +7,14 @@ import { ThemeProvider } from 'styled-components'
 import Theme from './src/styles/Theme'
 import { CustomKeyboardAvoidingView, CustomSafeAreaView } from './src/styles/App.style'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Toast from 'react-native-toast-message'
 
 const queryClient = new QueryClient()
 
 const customFonts = {
   Abel: require('./src/assets/fonts/Abel-Regular.ttf'),
   'DM Sans': require('./src/assets/fonts/DMSans-Regular.ttf'),
-  'DM Sans Bold': require('./src/assets/fonts/DMSans-Bold.ttf'),
-
+  'DM Sans Bold': require('./src/assets/fonts/DMSans-Bold.ttf')
 }
 const App = () => {
   const [isLoaded] = useFonts(customFonts)
@@ -39,6 +39,7 @@ const App = () => {
             </NavigationContainer>
           </CustomSafeAreaView>
         </QueryClientProvider>
+        <Toast />
       </CustomKeyboardAvoidingView>
     </ThemeProvider>
   )
