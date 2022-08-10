@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -155,8 +155,6 @@ export type StringOp = {
 };
 
 export type ItemsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
   searchValue?: InputMaybe<Scalars['String']>;
 }>;
 
@@ -165,8 +163,8 @@ export type ItemsQuery = { __typename?: 'RootQuery', items?: Array<{ __typename?
 
 
 export const ItemsDocument = `
-    query Items($limit: Int, $offset: Int, $searchValue: String) {
-  items(limit: $limit, offset: $offset, where: {name: {contains: $searchValue}}) {
+    query Items($searchValue: String) {
+  items(where: {name: {contains: $searchValue}}) {
     createdAt
     cuisineType
     desc
@@ -192,20 +190,5 @@ export const useItemsQuery = <
     useQuery<ItemsQuery, TError, TData>(
       variables === undefined ? ['Items'] : ['Items', variables],
       fetcher<ItemsQuery, ItemsQueryVariables>(client, ItemsDocument, variables, headers),
-      options
-    );
-export const useInfiniteItemsQuery = <
-      TData = ItemsQuery,
-      TError = unknown
-    >(
-      _pageParamKey: keyof ItemsQueryVariables,
-      client: GraphQLClient,
-      variables?: ItemsQueryVariables,
-      options?: UseInfiniteQueryOptions<ItemsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useInfiniteQuery<ItemsQuery, TError, TData>(
-      variables === undefined ? ['Items.infinite'] : ['Items.infinite', variables],
-      (metaData) => fetcher<ItemsQuery, ItemsQueryVariables>(client, ItemsDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );

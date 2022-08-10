@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { GraphQLClient } from 'graphql-request'
-import { ItemsQuery, useInfiniteItemsQuery, useItemsQuery } from '../generated'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ItemsQuery, useItemsQuery } from '../generated'
+import { FlatList, ScrollView } from 'react-native'
 import {
   Container,
   Title,
@@ -9,7 +9,6 @@ import {
   SearchBar,
   SearchBarInput,
   SearchResult,
-  SearchResultList,
   SearchResultCard,
   CardImageView,
   CardImage,
@@ -49,82 +48,68 @@ export interface IUser {
   photo: string
   price: number
 }
-const AddToCart = () => {
-  Toast.show({
-    type: 'success',
-    text1: 'Added to Cart'
-  })
-}
-const Item = ({ data }: { data: IUser }) => {
-  const [favroite, setFavroite] = React.useState(false)
-  return (
-    <SearchResultCard>
-      <CardImageView>
-        <CardImage source={{ uri: data.photo }} resizeMode="stretch" />
-        <FavoriteView>
-          <FavoriteText>{favroite ? data.favoriteCount + 1 : data.favoriteCount}</FavoriteText>
-          <FavoriteIconContainer onPress={() => setFavroite(data => !data)}>
-            <HeartIcon
-              fill={favroite ? Theme.activeTab : Theme.inactiveTab}
-              stroke={favroite ? Theme.activeTab : Theme.inactiveTab}
-            />
-          </FavoriteIconContainer>
-        </FavoriteView>
-        <PlusView onPress={AddToCart}>
-          <PlusViewText>+</PlusViewText>
-        </PlusView>
-      </CardImageView>
-      <DetailView>
-        <TitleView>
-          <TitleText>{data.name}</TitleText>
-          <TitleIconView>
-            <PlateerIcon />
-          </TitleIconView>
-        </TitleView>
-        <SubDetailView>
-          <CalorieView>
-            <CalorieIcon />
-            <CalorieText>789 kcal</CalorieText>
-          </CalorieView>
-          <DetailText>{data.desc}</DetailText>
-          <BottomView>
-            <PriceText>$ {data.price}</PriceText>
-            <SpiceText>
-              <SpiceIcon fill={Theme.activeTab} /> <SpiceIcon fill={Theme.inactiveTab} />{' '}
-              <SpiceIcon fill={Theme.inactiveTab} />
-            </SpiceText>
-          </BottomView>
-        </SubDetailView>
-      </DetailView>
-    </SearchResultCard>
-  )
-}
+
+const Item = React.memo(
+  ({ data }: { data: IUser }) => {
+    const [favroite, setFavroite] = React.useState(false)
+    const AddToCart = React.useCallback(() => {
+      Toast.show({
+        type: 'success',
+        text1: 'Added to Cart'
+      })
+    }, [])
+    return (
+      <SearchResultCard>
+        <CardImageView>
+          <CardImage source={{ uri: data.photo }} resizeMode="stretch" />
+          <FavoriteView>
+            <FavoriteText>{favroite ? data.favoriteCount + 1 : data.favoriteCount}</FavoriteText>
+            <FavoriteIconContainer onPress={() => setFavroite(data => !data)}>
+              <HeartIcon
+                fill={favroite ? Theme.activeTab : Theme.inactiveTab}
+                stroke={favroite ? Theme.activeTab : Theme.inactiveTab}
+              />
+            </FavoriteIconContainer>
+          </FavoriteView>
+          <PlusView onPress={AddToCart}>
+            <PlusViewText>+</PlusViewText>
+          </PlusView>
+        </CardImageView>
+        <DetailView>
+          <TitleView>
+            <TitleText>{data.name}</TitleText>
+            <TitleIconView>
+              <PlateerIcon />
+            </TitleIconView>
+          </TitleView>
+          <SubDetailView>
+            <CalorieView>
+              <CalorieIcon />
+              <CalorieText>789 kcal</CalorieText>
+            </CalorieView>
+            <DetailText>{data.desc}</DetailText>
+            <BottomView>
+              <PriceText>$ {data.price}</PriceText>
+              <SpiceText>
+                <SpiceIcon fill={Theme.activeTab} /> <SpiceIcon fill={Theme.inactiveTab} />{' '}
+                <SpiceIcon fill={Theme.inactiveTab} />
+              </SpiceText>
+            </BottomView>
+          </SubDetailView>
+        </DetailView>
+      </SearchResultCard>
+    )
+  },
+  () => true
+)
 
 const graphqlClient = new GraphQLClient('https://mockend.com/lakhanmandloi/fake-api/graphql')
 export default function Home() {
-  const [queryParams] = React.useState({ limit: 12 })
   const [searchText, setSearchText] = React.useState<string>('')
 
-  // const { isLoading, data, hasNextPage, fetchNextPage } = useInfiniteItemsQuery<ItemsQuery, Error>(
-  const { isLoading, data } = useItemsQuery<ItemsQuery, Error>(
-    graphqlClient,
-    { limit: queryParams.limit, offset: 0, searchValue: searchText.trim() }
-    // {
-    //   getNextPageParam: (lastPage: any, allPages: any) => {
-    //     return {
-    //       limit: queryParams.limit,
-    //       offset: (allPages.length ?? 0) * (queryParams.limit ?? 1)
-    //     }
-    //   }
-    // }
-  )
-  // const loadMore = () => {
-  //   if (hasNextPage) {
-  //     fetchNextPage()
-  //   }
-  // }
-  const renderItem: ListRenderItem<IUser> = ({ item }) => <Item data={item} />
-
+  const { isLoading, data } = useItemsQuery<ItemsQuery, Error>(graphqlClient, {
+    searchValue: searchText.trim()
+  })
   return (
     <Container>
       <Title>Hi, User! 👋</Title>
@@ -140,22 +125,19 @@ export default function Home() {
       {searchText.trim() ? (
         <SearchingResult>Search results for {searchText}</SearchingResult>
       ) : null}
-      {isLoading ? (
-        <Loader animating={true} />
-      ) : (
+      {isLoading ? <Loader animating={true} /> : null}
+      {data?.items?.length ? (
         <SearchResult>
-          <SearchResultList
-            data={data?.items || []}
+          <ScrollView
             contentContainerStyle={{ backgroundColor: Theme.background, paddingBottom: 50 }}
-            // data={data.pages.map(page => page.items).flat()}
-            renderItem={renderItem}
-            keyExtractor={(item: IUser) => item.id}
             showsVerticalScrollIndicator={false}
-            // onEndReached={loadMore}
-            // onEndReachedThreshold={0.3}
-          />
+          >
+            {data.items.map((item, index) => (
+              <Item key={index} data={item} />
+            ))}
+          </ScrollView>
         </SearchResult>
-      )}
+      ) : null}
     </Container>
   )
 }

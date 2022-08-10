@@ -46,28 +46,19 @@ const SearchResult = styled.View`
   flex: 1;
   margin-top: 12px;
 `
-const SearchResultList = styled.FlatList`
-  // flex: 1;
-  background: transparent;
-`
-const SearchResultTitle = styled.Text`
-  font-family: 'Abel';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 28px;
-  color: ${(props: IContainerProps) => props?.theme?.primaryBlack};
-`
+
 const SearchResultCard = styled.View`
   flex: 1;
   background: ${(props: IContainerProps) => props?.theme?.white};
   box-shadow: 0px 4px 40px rgba(34, 43, 50, 0.1);
   border-radius: 16px;
   margin-top: 16px;
+  height: 280px;
 `
 const CardImageView = styled.View`
   border-radius: 16px;
   background: ${(props: IContainerProps) => props?.theme?.inactiveTab};
+  height: 140px;
 `
 const CardImage = styled.Image`
   border-radius: 16px;
@@ -219,8 +210,6 @@ export {
   SearchBar,
   SearchBarInput,
   SearchResult,
-  SearchResultList,
-  SearchResultTitle,
   SearchResultCard,
   CardImageView,
   CardImage,

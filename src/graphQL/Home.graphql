@@ -1,5 +1,5 @@
-query Items($limit: Int, $offset: Int, $searchValue: String) {
-  items(limit: $limit, offset: $offset, where: { name: { contains: $searchValue } }) {
+query Items($searchValue: String) {
+  items(where: { name: { contains: $searchValue } }) {
     createdAt
     cuisineType
     desc

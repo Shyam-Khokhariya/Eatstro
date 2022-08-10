@@ -8,7 +8,7 @@ interface ITextProps {
 const CenterButton = styled.TouchableOpacity`
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 30px;
   align-items: center;
   justify-content: center;
   background: ${(props: IContainerProps) => props?.theme?.activeTab};
@@ -32,9 +32,9 @@ const CustomText = styled.Text`
   color: ${(props: ITextProps) => (props.color ? props.color : '#000000')};
 `
 const CustomDot = styled.View`
-  height: 6;
-  width: 6;
-  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+  border-radius: 3px;
   background: ${(props: IContainerProps) => props?.theme?.activeTab};
   margin-top: 4px;
 `
