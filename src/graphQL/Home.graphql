@@ -1,0 +1,14 @@
+query ITEMS($limit: Int, $offset: Int) {
+  items(limit: $limit, offset: $offset) {
+    createdAt
+    cuisineType
+    desc
+    dietaryChoice
+    favoriteCount
+    id
+    isPublished
+    name
+    photo
+    price
+  }
+}

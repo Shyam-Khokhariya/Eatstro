@@ -1,0 +1,12 @@
+overwrite: true
+schema: "https://mockend.com/lakhanmandloi/fake-api/graphql"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/index.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - typescript-react-query
+    config:
+        fetcher: graphql-request
+        addInfiniteQuery: true
